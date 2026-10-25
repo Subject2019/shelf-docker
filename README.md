@@ -52,7 +52,7 @@ bash uninstall.sh
 | `AUDIOBOOKS_PATH` | `/volume1/media/audiobooks` | 宿主机媒体目录，**必改**；容器内固定 `/audiobooks:ro` |
 | `ECHOSHELF_DATA_PATH` | `/volume1/docker/shelf` | 数据库/缓存，必须本地盘 |
 | `SHELF_HOST_PORT` | `8080` | 宿主机映射端口（容器内固定 8080） |
-| `ECHOSHELF_ADMIN_USERNAME` | `admin` | 初始管理员用户名 |
+| `ECHOSHELF_ADMIN_USERNAME` | `admin` | 初始管理员用户名（自动转小写） |
 | `ECHOSHELF_ADMIN_PASSWORD` | 空 | 初始密码（≥8 位），或改用 `ECHOSHELF_ADMIN_PASSWORD_FILE` |
 | `ECHOSHELF_ALLOW_REGISTRATION` | `false` | 自助注册开关 |
 | `ECHOSHELF_ENABLE_TRANSCODE` | `true` | 弱机器建议关闭 |

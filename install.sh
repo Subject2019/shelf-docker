@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # shelf 一键部署脚本（Docker / fnOS 通用）
 # 用法：  bash install.sh
-# 脚本会：① 询问媒体目录 / 数据目录 / 管理员密码  ② 生成 .env
-#         ③ 拉取 ghcr.io/subject2019/shelf:latest  ④ docker compose up -d
+# 脚本会：① 询问媒体目录 / 数据目录 / 管理员用户名 / 映射端口 / 管理员密码  ② 生成 .env
+#         ③ 拉取 ghcr.io/subject2019/shelf:latest  ④ docker compose up -d  ⑤ 校验管理员账号
 set -euo pipefail
 
 cd "$(dirname "$0")"
@@ -11,6 +11,7 @@ COMPOSE_DIR="."
 ENV_EXAMPLE="$COMPOSE_DIR/.env.example"
 ENV_FILE="$COMPOSE_DIR/.env"
 IMAGE="ghcr.io/subject2019/shelf:latest"
+CONTAINER_NAME="shelf"
 
 DEFAULT_MEDIA="/volume1/media/audiobooks"
 DEFAULT_DATA="/volume1/docker/shelf"
@@ -27,7 +28,7 @@ read -r -p "媒体目录（有声书文件，容器内只读挂载）[$DEFAULT_M
 MEDIA="${MEDIA:-$DEFAULT_MEDIA}"
 read -r -p "数据目录（数据库/缓存，必须本地盘）[$DEFAULT_DATA]: " DATA
 DATA="${DATA:-$DEFAULT_DATA}"
-read -r -p "管理员用户名（默认 admin）[$DEFAULT_USER]: " USERNAME
+read -r -p "管理员用户名（默认 admin，将自动转为小写）[$DEFAULT_USER]: " USERNAME
 USERNAME="${USERNAME:-$DEFAULT_USER}"
 while true; do
   read -r -p "映射端口（宿主机端口，容器固定 8080）[$DEFAULT_PORT]: " PORT
@@ -38,12 +39,19 @@ while true; do
   echo "端口需为 1-65535 的数字，请重新输入。"
 done
 
-read -r -s -p "管理员密码（至少 8 位，留空则随机生成）: " PW
-echo
-if [ -z "$PW" ]; then
-  PW="$(head -c 12 /dev/urandom | base64 | tr -dc 'A-Za-z0-9' | head -c 12)"
-  echo "未输入密码，已随机生成: $PW  （请记好；忘记可用 docker exec 重置）"
-fi
+while true; do
+  read -r -s -p "管理员密码（至少 8 位，留空则随机生成）: " PW
+  echo
+  if [ -z "$PW" ]; then
+    PW="$(head -c 12 /dev/urandom | base64 | tr -dc 'A-Za-z0-9' | head -c 12)"
+    echo "未输入密码，已随机生成: $PW  （请记好；忘记可用 docker exec 重置）"
+    break
+  fi
+  if [ "${#PW}" -ge 8 ]; then
+    break
+  fi
+  echo "密码至少需要 8 位，请重新输入（或直接回车随机生成）。"
+done
 
 mkdir -p "$MEDIA" "$DATA"
 
@@ -63,6 +71,22 @@ echo ">>> 拉取镜像..."
 $DC -f "$COMPOSE_DIR/docker-compose.yaml" pull
 echo ">>> 启动容器..."
 $DC -f "$COMPOSE_DIR/docker-compose.yaml" up -d
+
+echo ">>> 校验管理员账号（等待容器就绪）..."
+CHECK_USER="${USERNAME,,}"
+for i in $(seq 1 10); do
+  sleep 2
+  if docker ps -q -f "name=^${CONTAINER_NAME}$" | grep -q .; then break; fi
+done
+if docker exec "$CONTAINER_NAME" python -m app.cli admin list 2>/dev/null | grep -q "$CHECK_USER"; then
+  echo "管理员账号已生效：$CHECK_USER"
+else
+  echo "⚠️ 未检测到期望的管理员 '$CHECK_USER'。可能数据目录已有旧管理员（环境变量仅在数据库为空时生效一次）。"
+  echo "   如需使用 '$CHECK_USER'，请停止容器并清空 ECHOSHELF_DATA_PATH 后重新部署；"
+  echo "   或执行：docker exec -it $CONTAINER_NAME python -m app.cli admin reset-password --username <实际用户名> --password '<新密码>'"
+  echo "   当前实际管理员："
+  docker exec "$CONTAINER_NAME" python -m app.cli admin list 2>/dev/null || echo "（无法读取，请手动执行 admin list 检查）"
+fi
 
 echo
 echo "=== 完成 ==="
