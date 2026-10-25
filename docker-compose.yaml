@@ -1,0 +1,74 @@
+# shelf 飞牛(fnOS) Docker 应用编排
+#
+# 该文件由飞牛应用中心在 app/docker/ 目录执行 `docker compose up -d` 运行。
+# 变量优先级：飞牛注入的 TRIM_* > 当前目录 .env > 下方默认值。
+# 自定义变量见同目录 .env.example（复制为 .env 后修改）。
+
+services:
+  shelf:
+    # 运行镜像（已发布在 GitHub Container Registry，飞牛安装时自动拉取）
+    #   镜像地址：ghcr.io/subject2019/shelf（标签 latest 与版本号，如 0.1.0）
+    #   若已在本机手动 docker load 了本地镜像，可把下面 image 改成对应镜像名
+    image: ghcr.io/subject2019/shelf:latest
+    container_name: shelf
+    restart: unless-stopped
+
+    ports:
+      # 宿主机端口：手动部署用 SHELF_HOST_PORT；飞牛由 TRIM_SERVICE_PORT 注入；均未设则默认 8080
+      - "${SHELF_HOST_PORT:-${TRIM_SERVICE_PORT:-8080}}:8080"
+
+    environment:
+      TZ: ${TZ:-Asia/Shanghai}
+      ECHOSHELF_DATA_PATH: /data
+      ECHOSHELF_AUDIOBOOKS_PATH: /audiobooks
+      ECHOSHELF_LOG_LEVEL: ${ECHOSHELF_LOG_LEVEL:-info}
+      # 管理员只能带外创建：网页端没有初始化入口
+      ECHOSHELF_ADMIN_USERNAME: ${ECHOSHELF_ADMIN_USERNAME:-admin}
+      ECHOSHELF_ADMIN_PASSWORD: ${ECHOSHELF_ADMIN_PASSWORD:-}
+      ECHOSHELF_ADMIN_PASSWORD_FILE: ${ECHOSHELF_ADMIN_PASSWORD_FILE:-}
+      # true：每次启动都用上面的密码覆盖管理员（改完重启即生效）
+      ECHOSHELF_ADMIN_SYNC_PASSWORD: ${ECHOSHELF_ADMIN_SYNC_PASSWORD:-false}
+      ECHOSHELF_ALLOW_REGISTRATION: ${ECHOSHELF_ALLOW_REGISTRATION:-false}
+      ECHOSHELF_ENABLE_TRANSCODE: ${ECHOSHELF_ENABLE_TRANSCODE:-true}
+      ECHOSHELF_SCAN_VIRTUAL_CHAPTER_MIN: ${ECHOSHELF_SCAN_VIRTUAL_CHAPTER_MIN:-15}
+      # 按章节切片（客户端离线下载用），WebUI 不调用
+      ECHOSHELF_ENABLE_CHAPTER_CACHE: ${ECHOSHELF_ENABLE_CHAPTER_CACHE:-true}
+      ECHOSHELF_CHAPTER_CACHE_MAX_BYTES: ${ECHOSHELF_CHAPTER_CACHE_MAX_BYTES:-2147483648}
+      # 整轨转码（wma/ape → opus/mp3）
+      ECHOSHELF_TRANSCODE_MAX_BYTES: ${ECHOSHELF_TRANSCODE_MAX_BYTES:-4294967296}
+      ECHOSHELF_TRANSCODE_MAX_DURATION_SEC: ${ECHOSHELF_TRANSCODE_MAX_DURATION_SEC:-7200}
+      # 入口脚本按这两个值建用户并降权运行；首次启动会 chown -R 数据目录
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+
+    volumes:
+      # 媒体库：只读。容器内路径必须与「书库设置」里填的一致
+      - "${AUDIOBOOKS_PATH:-/volume1/media/audiobooks}:/audiobooks:ro"
+      # 配置/数据库/封面缓存（必须放本地盘，不要用 SMB/NFS）
+      - "${ECHOSHELF_DATA_PATH:-/volume1/docker/shelf}:/data"
+
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - |
+          import sys, urllib.request
+          try:
+              r = urllib.request.urlopen("http://127.0.0.1:8080/api/v1/health", timeout=3)
+              sys.exit(0 if r.status == 200 else 1)
+          except Exception:
+              sys.exit(1)
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    security_opt:
+      - no-new-privileges:true
