@@ -2,7 +2,7 @@
 # shelf 一键部署脚本（Docker / fnOS 通用）
 # 用法：  bash install.sh
 # 脚本会：① 询问媒体目录 / 数据目录 / 管理员用户名 / 映射端口 / 管理员密码  ② 生成 .env
-#         ③ 拉取 ghcr.io/subject2019/shelf:latest  ④ docker compose up -d  ⑤ 校验管理员账号
+#         ③ 拉取 ghcr.io/subject2019/shelf:latest 并核对本地与 ghcr 镜像一致性  ④ docker compose up -d  ⑤ 校验管理员账号
 set -euo pipefail
 
 cd "$(dirname "$0")"
@@ -67,8 +67,27 @@ EOF
 
 echo "已生成 $ENV_FILE"
 
-echo ">>> 拉取镜像..."
+echo ">>> 拉取镜像（保证本地与 ghcr 一致）..."
 $DC -f "$COMPOSE_DIR/docker-compose.yaml" pull
+
+echo ">>> 校验本地镜像与 ghcr 一致性..."
+REMOTE_DIGEST=$(docker buildx imagetools inspect "$IMAGE" --format '{{index .Manifest.Digest}}' 2>/dev/null || true)
+LOCAL_DIGEST=$(docker inspect --format '{{index .RepoDigests 0}}' "$IMAGE" 2>/dev/null || true)
+# 归一化：本地 RepoDigests 形如 ghcr.io/...@sha256:xxx，远端 digest 为 sha256:xxx，去掉仓库前缀再比
+LOCAL_DIGEST="${LOCAL_DIGEST#*@}"
+if [ -n "$REMOTE_DIGEST" ] && [ -n "$LOCAL_DIGEST" ]; then
+  if [ "$REMOTE_DIGEST" = "$LOCAL_DIGEST" ]; then
+    echo "✅ 本地镜像与 ghcr 一致: $LOCAL_DIGEST"
+  else
+    echo "⚠️ 本地镜像与 ghcr 不一致！本地=$LOCAL_DIGEST 远端=$REMOTE_DIGEST"
+    echo "   请先执行: $DC -f \"$COMPOSE_DIR/docker-compose.yaml\" pull 后再部署"
+  fi
+elif [ -n "$REMOTE_DIGEST" ]; then
+  echo "⚠️ 未能读取本地镜像 digest（可能拉取未完成或未登录 ghcr），远端 digest=$REMOTE_DIGEST"
+else
+  echo "⚠️ 无法获取 ghcr 远端 digest，请确认网络 / 登录状态（docker login ghcr.io）"
+fi
+
 echo ">>> 启动容器..."
 $DC -f "$COMPOSE_DIR/docker-compose.yaml" up -d
 
@@ -90,6 +109,8 @@ fi
 
 echo
 echo "=== 完成 ==="
+echo "镜像:   $IMAGE"
+[ -n "$LOCAL_DIGEST" ] && echo "Digest: $LOCAL_DIGEST"
 echo "WebUI:  http://<本机IP>:$PORT/   （在飞牛上端口以应用分配为准）"
 echo "管理员: $USERNAME / $PW"
 echo "媒体库: 网页端「设置 → 书库」添加 /audiobooks"
