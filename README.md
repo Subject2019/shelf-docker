@@ -1,6 +1,6 @@
 # shelf · Docker 一键部署
 
-自托管有声书服务器 [shelf](https://github.com/subject2019/shelf) 的 Docker 部署仓库。
+自托管有声书服务器 shelf 的 Docker 部署仓库。
 
 - 运行镜像来自 GitHub Container Registry：**`ghcr.io/subject2019/shelf`**（公开，安装时自动拉取）。
 - 本仓库只包含部署所需文件：`docker-compose.yaml` + `.env.example` + 一键安装/卸载脚本，**不含 shelf 源码**。
@@ -12,6 +12,40 @@
 - 密码：`shelf2026`
 
 > 公开演示账号，仅供体验；请勿存放隐私数据。
+
+## 界面预览
+
+> 截图来自 shelf 示例书库，暗色主题。
+
+### 桌面端（1440×900）
+
+<p align="center">
+  <img src="./assets/screenshots/01-desktop-home.png" width="49%" alt="桌面端首页" />
+  <img src="./assets/screenshots/02-desktop-library.png" width="49%" alt="桌面端书库" />
+</p>
+<p align="center">
+  <img src="./assets/screenshots/03-desktop-book.png" width="49%" alt="桌面端书籍详情" />
+  <img src="./assets/screenshots/04-desktop-player.png" width="49%" alt="桌面端播放页" />
+</p>
+<p align="center">
+  <img src="./assets/screenshots/05-desktop-settings.png" width="49%" alt="桌面端设置" />
+  <img src="./assets/screenshots/06-desktop-settings-library.png" width="49%" alt="桌面端书库设置" />
+</p>
+<p align="center">
+  <img src="./assets/screenshots/07-desktop-authors.png" width="70%" alt="桌面端作者视图" />
+</p>
+
+### 手机端（390×844）
+
+<p align="center">
+  <img src="./assets/screenshots/08-mobile-home.png" width="32%" alt="手机端首页" />
+  <img src="./assets/screenshots/09-mobile-library.png" width="32%" alt="手机端书库" />
+  <img src="./assets/screenshots/10-mobile-book.png" width="32%" alt="手机端书籍详情" />
+</p>
+<p align="center">
+  <img src="./assets/screenshots/11-mobile-player.png" width="32%" alt="手机端播放页" />
+  <img src="./assets/screenshots/12-mobile-settings.png" width="32%" alt="手机端设置" />
+</p>
 
 ## 环境要求
 
