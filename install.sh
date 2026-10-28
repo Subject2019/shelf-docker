@@ -55,6 +55,14 @@ done
 
 mkdir -p "$MEDIA" "$DATA"
 
+# 权限预检：媒体目录必须对容器运行用户可读，否则扫描读不到文件
+if [ ! -r "$MEDIA" ] || [ ! -x "$MEDIA" ]; then
+  echo "⚠️ 媒体目录当前用户不可读/不可进入：$MEDIA"
+  echo "   容器以 PUID/PGID（默认 1000）运行，请确保该目录可读，例如："
+  echo "     sudo chmod -R a+rX \"$MEDIA\""
+  echo "   或在 .env 中把 PUID/PGID 调整为宿主机上拥有该目录的用户。"
+fi
+
 # 生成 .env（覆盖式写入，避免重复 key；其余变量在 compose 中已有默认值）
 cat > "$ENV_FILE" <<EOF
 # shelf 部署环境变量（由 install.sh 生成）

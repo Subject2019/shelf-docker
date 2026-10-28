@@ -40,25 +40,35 @@ else
   echo "保留镜像（重装时无需重新拉取）"
 fi
 
-# 3) 是否删除数据目录（尝试从 .env 或容器挂载反查路径）
+# 3) 是否删除数据目录（优先从 .env 读取 ECHOSHELF_DATA_PATH）
 DATA=""
 if [ -f "$COMPOSE_DIR/.env" ]; then
-  DATA="$(grep -E '^ECHOSHELF_DATA_PATH=' "$COMPOSE_DIR/.env" | cut -d= -f2-)"
+  # 加 || true：grep 无匹配时不会因 set -e/pipefail 提前退出
+  DATA="$(grep -E '^ECHOSHELF_DATA_PATH=' "$COMPOSE_DIR/.env" | head -1 | cut -d= -f2- || true)"
 fi
+DATA="${DATA%$'\r'}"   # 去掉可能的 CRLF 回车
 if [ -n "$DATA" ]; then
   echo "数据目录：$DATA"
   read -r -p "是否删除该数据目录（数据库/封面缓存，删除后不可逆）？(y/N): " RM_DATA
   if [[ "$RM_DATA" =~ ^[Yy]$ ]]; then
-    if rm -rf "$DATA"; then
+    if [ ! -e "$DATA" ]; then
+      echo "数据目录不存在（可能已删除）：$DATA"
+    elif rm -rf "$DATA" 2>/dev/null; then
       echo "已删除数据目录 $DATA"
+    elif command -v sudo >/dev/null 2>&1 && sudo rm -rf "$DATA"; then
+      # 目录常由容器以 root/PUID 创建，普通用户删不掉时用 sudo 兜底
+      echo "已删除数据目录 $DATA（sudo）"
     else
-      echo "删除失败，请手动删除：$DATA"
+      echo "删除失败（可能是权限不足）：请手动执行  sudo rm -rf \"$DATA\""
+    fi
+    if [ -e "$DATA" ]; then
+      echo "⚠️ 数据目录仍然存在：$DATA（请检查权限后重试）"
     fi
   else
     echo "保留数据目录 $DATA"
   fi
 else
-  echo "未定位到数据目录；如需清理，请手动删除你之前指定的 ECHOSHELF_DATA_PATH"
+  echo "未定位到数据目录（.env 中无 ECHOSHELF_DATA_PATH）；如需彻底清理，请手动删除之前指定的数据目录。"
 fi
 
 echo "=== 卸载完成 ==="
