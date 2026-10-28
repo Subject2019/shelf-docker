@@ -5,6 +5,14 @@
 - 运行镜像来自 GitHub Container Registry：**`ghcr.io/subject2019/shelf`**（公开，安装时自动拉取）。
 - 本仓库只包含部署所需文件：`docker-compose.yaml` + `.env.example` + 一键安装/卸载脚本，**不含 shelf 源码**。
 
+## 在线实例
+
+- 实例地址：http://123.56.254.152
+- 用户名：`shelf`
+- 密码：`shelf2026`
+
+> 公开演示账号，仅供体验；请勿存放隐私数据。
+
 ## 环境要求
 
 - Docker ≥ 20.10，且 Docker Compose v2（`docker compose` 命令可用）。
