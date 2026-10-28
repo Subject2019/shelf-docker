@@ -47,6 +47,15 @@
   <img src="./assets/screenshots/12-mobile-settings.png" width="32%" alt="手机端设置" />
 </p>
 
+## Android 客户端
+
+最新安装包：[shelf-0.2.5.apk](./release/shelf-0.2.5.apk)（3.1 MB，release 签名）
+
+- 包名：`com.shelf.pwa`
+- 首次启动填写服务器地址；Android 13+ 需允许通知权限
+- 之前安装过 debug 版的设备，需要先卸载旧 App 再安装
+- 校验值与安装说明见 [`release/README.md`](./release/README.md)
+
 ## 环境要求
 
 - Docker ≥ 20.10，且 Docker Compose v2（`docker compose` 命令可用）。
