@@ -19,15 +19,3 @@ sha256sum -c shelf-0.2.5.apk.sha256
 ```
 
 > 这是 **release 签名**包。之前安装过 debug 版的设备签名不同，需要先卸载旧 App 再安装。
-
-## GitHub 下载
-
-推送到 GitHub 后，可以直接访问：
-
-```text
-https://github.com/Subject2019/shelf-docker/blob/main/release/shelf-0.2.5.apk
-```
-
-在文件页点「Download」下载；校验值在同目录的 `.sha256` 文件。
-
-如果要在 GitHub **Releases** 页面发布，可以建一个 `v0.2.5` tag，并把本目录的 APK 作为 release asset 上传。
