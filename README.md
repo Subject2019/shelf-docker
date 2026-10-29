@@ -65,7 +65,7 @@
 克隆后直接跑一键脚本：
 
 ```bash
-git clone https://github.com/subject2019/shelf-docker.git shelf-docker && cd shelf-docker
+git clone --depth 1 https://github.com/subject2019/shelf-docker.git shelf-docker && cd shelf-docker
 bash install.sh
 ```
 
