@@ -49,7 +49,9 @@
 
 ## Android 客户端
 
-最新安装包：[shelf-0.2.5.apk](https://github.com/Subject2019/shelf-docker/releases/download/v0.2.5/shelf-0.2.5.apk)（3.1 MB，release 签名）
+最新安装包：[shelf-0.2.6.apk](https://github.com/Subject2019/shelf-docker/releases/download/V0.2.6/shelf-0.2.6.apk)（3.1 MB，release 签名）
+
+> 服务端镜像版本与 Android 客户端版本独立。当前服务端/Web 镜像为 0.2.7，Android 安装包为 0.2.6。
 
 - 包名：`com.shelf.pwa`
 - 首次启动填写服务器地址；Android 13+ 需允许通知权限
