@@ -4,6 +4,9 @@
 # 打包产物
 *.fpk
 
+# 升级前自动备份
+backups/
+
 # 系统 / 编辑器
 .DS_Store
 *.swp

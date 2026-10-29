@@ -3,7 +3,7 @@
 自托管有声书服务器 shelf 的 Docker 部署仓库。
 
 - 运行镜像来自 GitHub Container Registry：**`ghcr.io/subject2019/shelf`**（公开，安装时自动拉取）。
-- 本仓库只包含部署所需文件：`docker-compose.yaml` + `.env.example` + 一键安装/卸载脚本，**不含 shelf 源码**。
+- 本仓库只包含部署所需文件：`docker-compose.yaml` + `.env.example` + 一键安装/升级/卸载脚本，**不含 shelf 源码**。
 
 ## 在线实例
 
@@ -73,6 +73,32 @@ bash install.sh
 完成后浏览器打开 `http://<本机IP>:<映射端口>/`（默认 8080），用设置的管理员用户名/密码登录；网页端「设置 → 书库」添加 `/audiobooks`。
 
 > 脚本依赖同仓库的 `docker-compose.yaml` 与 `.env.example`，请在仓库根目录运行，不要单独取出 `install.sh` 执行。
+
+## 升级
+
+已经部署过的实例，在仓库根目录执行：
+
+```bash
+git pull
+bash upgrade.sh
+```
+
+脚本会：
+
+1. 在线备份数据库和 `secret.key` 到 `backups/`；
+2. 拉取最新的 `ghcr.io/subject2019/shelf:latest`；
+3. 用现有 `.env` 和数据目录重建容器；
+4. 等待健康检查，并打印升级后的版本。
+
+数据目录、媒体挂载、管理员密码和 `.env` 都不会被重置。默认保留最近 5 份升级备份。
+
+```bash
+bash upgrade.sh --no-backup   # 跳过升级前备份
+```
+
+> 如果 GHCR 包是 Private，请先 `docker login ghcr.io`。
+>
+> 裸机/常规部署没有单独的升级脚本：解压新分发包后重跑 `sudo ./install.sh` 即可，数据目录会保留。
 
 ## 手动部署（docker run）
 
