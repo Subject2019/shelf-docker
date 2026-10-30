@@ -4,6 +4,25 @@
 
 - 运行镜像来自 GitHub Container Registry：**`ghcr.io/subject2019/shelf`**（公开，安装时自动拉取）。
 - 本仓库只包含部署所需文件：`docker-compose.yaml` + `.env.example` + 一键安装/升级/卸载脚本，**不含 shelf 源码**。
+- 当前版本：服务端/Web **0.2.7**；Android **0.2.7**。
+
+## Docker 镜像
+
+- 固定版本：`ghcr.io/subject2019/shelf:0.2.7`
+- 最新版本：`ghcr.io/subject2019/shelf:latest`
+- GHCR 包页面：[shelf](https://github.com/users/Subject2019/packages/container/shelf)
+
+公开包可以直接拉取：
+
+```bash
+docker pull ghcr.io/subject2019/shelf:0.2.7
+```
+
+如果包设置为 Private，需要先：
+
+```bash
+docker login ghcr.io
+```
 
 ## 在线实例
 
