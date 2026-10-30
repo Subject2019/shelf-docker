@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/shelf-logo.png" width="128" alt="声架 shelf logo" />
+  <img src="./assets/shelf-logo.png" width="150" alt="声架 shelf logo，含 SHELF 字标" />
   <h1>声架 <sub>shelf</sub></h1>
   <p><strong>自托管有声书服务器</strong><br />把有声书放进 NAS，打开浏览器或 Android App 就能听。</p>
   <p>
