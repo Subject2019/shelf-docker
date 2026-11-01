@@ -20,7 +20,6 @@ services:
     environment:
       TZ: ${TZ:-Asia/Shanghai}
       ECHOSHELF_DATA_PATH: /data
-      ECHOSHELF_AUDIOBOOKS_PATH: /audiobooks
       ECHOSHELF_LOG_LEVEL: ${ECHOSHELF_LOG_LEVEL:-info}
       # 管理员只能带外创建：网页端没有初始化入口
       ECHOSHELF_ADMIN_USERNAME: ${ECHOSHELF_ADMIN_USERNAME:-admin}
@@ -42,7 +41,7 @@ services:
       PGID: ${PGID:-1000}
 
     volumes:
-      # 媒体库：只读。容器内路径必须与「书库设置」里填的一致
+      # 媒体库：只读。容器内路径固定为 /audiobooks，只需修改宿主机路径
       - "${AUDIOBOOKS_PATH:-/volume1/media/audiobooks}:/audiobooks:ro"
       # 配置/数据库/封面缓存（必须放本地盘，不要用 SMB/NFS）
       - "${ECHOSHELF_DATA_PATH:-/volume1/docker/shelf}:/data"

@@ -3,7 +3,7 @@
   <h1>声架 <sub>shelf</sub></h1>
   <p><strong>自托管有声书服务器</strong><br />把有声书放进 NAS，打开浏览器或 Android App 就能听。</p>
   <p>
-    <img alt="version" src="https://img.shields.io/badge/version-0.2.7-2f6f4e?style=flat-square" />
+    <img alt="version" src="https://img.shields.io/badge/version-0.2.8-2f6f4e?style=flat-square" />
     <img alt="docker" src="https://img.shields.io/badge/GHCR-ghcr.io%2Fsubject2019%2Fshelf-2496ED?style=flat-square&logo=docker&logoColor=white" />
     <img alt="android" src="https://img.shields.io/badge/Android-0.2.7-3DDC84?style=flat-square&logo=android&logoColor=white" />
   </p>
@@ -127,14 +127,14 @@ http://<NAS_IP>:<端口>/
 
 | 标签 | 用途 |
 |---|---|
-| `ghcr.io/subject2019/shelf:0.2.7` | 固定版本，适合生产 |
+| `ghcr.io/subject2019/shelf:0.2.8` | 固定版本，适合生产 |
 | `ghcr.io/subject2019/shelf:latest` | 最新构建，适合测试 |
 
 - GHCR 包页面：[shelf](https://github.com/users/Subject2019/packages/container/shelf)
 - 公开包可以直接拉取：
 
 ```bash
-docker pull ghcr.io/subject2019/shelf:0.2.7
+docker pull ghcr.io/subject2019/shelf:0.2.8
 ```
 
 如果包是 Private，先登录：
@@ -218,7 +218,7 @@ docker run -d --name shelf -p 8080:8080 \
 
 **Android 没有媒体卡片或进度条？**
 
-先确认手机允许通知权限，并确认服务端已经升级到 0.2.7。部分 ROM 会折叠媒体卡片，展开后才能看到进度条。
+先确认手机允许通知权限，并确认服务端已经升级到 0.2.8。部分 ROM 会折叠媒体卡片，展开后才能看到进度条。
 
 **升级后数据还在吗？**
 
