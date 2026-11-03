@@ -16,7 +16,7 @@
 
 整个服务只需要 **一个 Docker 容器 + SQLite**，不需要 Postgres、Redis 或其他外部服务，普通 NAS 就能运行。
 
-> **主项目已开源**：[Subject2019/shelf](https://github.com/Subject2019/shelf)
+> **主项目源码已公开（非商业许可）**：[Subject2019/shelf](https://github.com/Subject2019/shelf)
 >
 > 本仓库只包含 Docker 部署配置、安装/升级脚本、APK 和校验值；服务端、WebUI 与 Android 源码均在主项目维护。
 

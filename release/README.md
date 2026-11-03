@@ -1,6 +1,6 @@
 # release — Android 安装包
 
-> 主项目源码已开源：[Subject2019/shelf](https://github.com/Subject2019/shelf)。Android 壳的构建说明见主项目 [`android-pwa/README.md`](https://github.com/Subject2019/shelf/blob/main/android-pwa/README.md)。
+> 主项目源码已公开（非商业许可）：[Subject2019/shelf](https://github.com/Subject2019/shelf)。Android 壳的构建说明见主项目 [`android-pwa/README.md`](https://github.com/Subject2019/shelf/blob/main/android-pwa/README.md)。
 
 | 文件 | 说明 |
 |---|---|
