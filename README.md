@@ -6,6 +6,7 @@
     <img alt="version" src="https://img.shields.io/badge/version-0.2.9-2f6f4e?style=flat-square" />
     <img alt="docker" src="https://img.shields.io/badge/GHCR-ghcr.io%2Fsubject2019%2Fshelf-2496ED?style=flat-square&logo=docker&logoColor=white" />
     <img alt="android" src="https://img.shields.io/badge/Android-0.2.9-3DDC84?style=flat-square&logo=android&logoColor=white" />
+    <a href="https://github.com/Subject2019/shelf"><img alt="source" src="https://img.shields.io/badge/源码-GitHub-181717?style=flat-square&logo=github&logoColor=white" /></a>
   </p>
 </div>
 
@@ -15,7 +16,17 @@
 
 整个服务只需要 **一个 Docker 容器 + SQLite**，不需要 Postgres、Redis 或其他外部服务，普通 NAS 就能运行。
 
-> 本仓库是公开的 **Docker 部署仓库**，只包含部署配置、脚本、APK 和校验值；shelf 源码在主项目中维护。
+> **主项目已开源**：[Subject2019/shelf](https://github.com/Subject2019/shelf)
+>
+> 本仓库只包含 Docker 部署配置、安装/升级脚本、APK 和校验值；服务端、WebUI 与 Android 源码均在主项目维护。
+
+## 源码与文档
+
+- 主项目源码：<https://github.com/Subject2019/shelf>
+- 服务端 / WebUI：主项目 `backend/`、`web/`
+- Android 客户端：主项目 `android-pwa/`
+- API 文档：[`docs/API.md`](https://github.com/Subject2019/shelf/blob/main/docs/API.md)
+- 问题反馈与功能建议：优先提交到[主项目 Issues](https://github.com/Subject2019/shelf/issues)；纯部署脚本问题也可以提交到本仓库 Issues。
 
 ## 快速开始
 

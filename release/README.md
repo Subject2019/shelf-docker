@@ -1,5 +1,7 @@
 # release — Android 安装包
 
+> 主项目源码已开源：[Subject2019/shelf](https://github.com/Subject2019/shelf)。Android 壳的构建说明见主项目 [`android-pwa/README.md`](https://github.com/Subject2019/shelf/blob/main/android-pwa/README.md)。
+
 | 文件 | 说明 |
 |---|---|
 | `shelf-0.2.9.apk` | Android WebView 壳，版本 0.2.9，包名 `com.shelf.pwa`，3.1 MB，release 签名 |
