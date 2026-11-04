@@ -3,9 +3,9 @@
   <h1>声架 <sub>shelf</sub></h1>
   <p><strong>自托管有声书服务器</strong><br />把有声书放进 NAS，打开浏览器或 Android App 就能听。</p>
   <p>
-    <img alt="version" src="https://img.shields.io/badge/version-0.2.9-2f6f4e?style=flat-square" />
+    <img alt="version" src="https://img.shields.io/badge/version-0.2.10-2f6f4e?style=flat-square" />
     <img alt="docker" src="https://img.shields.io/badge/GHCR-ghcr.io%2Fsubject2019%2Fshelf-2496ED?style=flat-square&logo=docker&logoColor=white" />
-    <img alt="android" src="https://img.shields.io/badge/Android-0.2.9-3DDC84?style=flat-square&logo=android&logoColor=white" />
+    <img alt="android" src="https://img.shields.io/badge/Android-0.2.10-3DDC84?style=flat-square&logo=android&logoColor=white" />
     <a href="https://github.com/Subject2019/shelf"><img alt="source" src="https://img.shields.io/badge/源码-GitHub-181717?style=flat-square&logo=github&logoColor=white" /></a>
   </p>
 </div>
@@ -121,13 +121,13 @@ http://<NAS_IP>:<端口>/
 ## Android 客户端
 
 <p align="left">
-  <a href="https://github.com/Subject2019/shelf-docker/releases/download/v0.2.9/shelf-0.2.9.apk">
-    <img src="https://img.shields.io/badge/下载-Android%200.2.9-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="下载 Android 0.2.9" />
+  <a href="https://github.com/Subject2019/shelf-docker/releases/download/v0.2.10/shelf-0.2.10.apk">
+    <img src="https://img.shields.io/badge/下载-Android%200.2.10-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="下载 Android 0.2.10" />
   </a>
 </p>
 
 - 包名：`com.shelf.pwa`
-- 最新版本：`0.2.9`，release 签名，约 3.1 MB
+- 最新版本：`0.2.10`，release 签名，约 3.1 MB
 - 首次启动填写服务器地址；Android 13+ 需要允许通知权限
 - 状态栏/锁屏媒体卡片支持上一集、快退 15 秒、播放/暂停、快进 15 秒、下一集
 - 当前版本会在系统媒体卡片显示当前单集的播放进度条
@@ -138,14 +138,14 @@ http://<NAS_IP>:<端口>/
 
 | 标签 | 用途 |
 |---|---|
-| `ghcr.io/subject2019/shelf:0.2.9` | 固定版本，适合生产 |
+| `ghcr.io/subject2019/shelf:0.2.10` | 固定版本，适合生产 |
 | `ghcr.io/subject2019/shelf:latest` | 最新构建，适合测试 |
 
 - GHCR 包页面：[shelf](https://github.com/users/Subject2019/packages/container/shelf)
 - 公开包可以直接拉取：
 
 ```bash
-docker pull ghcr.io/subject2019/shelf:0.2.9
+docker pull ghcr.io/subject2019/shelf:0.2.10
 ```
 
 如果包是 Private，先登录：
@@ -229,7 +229,7 @@ docker run -d --name shelf -p 8080:8080 \
 
 **Android 没有媒体卡片或进度条？**
 
-先确认手机允许通知权限，并确认服务端已经升级到 0.2.9。部分 ROM 会折叠媒体卡片，展开后才能看到进度条。
+先确认手机允许通知权限，并确认服务端已经升级到 0.2.10。部分 ROM 会折叠媒体卡片，展开后才能看到进度条。
 
 **升级后数据还在吗？**
 
@@ -250,8 +250,8 @@ shelf-docker/
 ├── uninstall.sh
 ├── README.md
 ├── release/
-│   ├── shelf-0.2.9.apk
-│   └── shelf-0.2.9.apk.sha256
+│   ├── shelf-0.2.10.apk
+│   └── shelf-0.2.10.apk.sha256
 └── assets/
     ├── shelf-logo.png
     └── screenshots/
